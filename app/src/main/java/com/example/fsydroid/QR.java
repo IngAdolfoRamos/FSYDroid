@@ -22,6 +22,8 @@ public class QR extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
 
+        SQLiteHelper connection = new SQLiteHelper(this, "FSY", null, 1);
+
         Long eventValue;
 
         Intent getEventValue = getIntent();
@@ -48,6 +50,8 @@ public class QR extends AppCompatActivity {
                 mCodeScanner.startPreview();
             }
         });
+
+
     }
 
     @Override

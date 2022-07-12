@@ -8,8 +8,6 @@ import androidx.annotation.Nullable;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
 
-    final String CREATE_USER_TABLE = "CREATE TABLE People (Id INTEGER, Reference TEXT)";
-
     public SQLiteHelper(@Nullable Context context, @Nullable String name,
                         @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -17,7 +15,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(CREATE_USER_TABLE);
+        sqLiteDatabase.execSQL(Utilities.CREATE_USER_TABLE);
     }
 
     @Override
