@@ -62,6 +62,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                manualSelectionB.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent goToManualSelectionPage = new Intent(MainActivity.this, QR.class);
+                        goToManualSelectionPage.putExtra("eventValue", item);
+                        startActivity(goToManualSelectionPage);
+                    }
+                });
+
             }
 
             @Override
@@ -69,14 +78,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        manualSelectionB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        
     }
 
     public void checkPermission(String permission, int requestCode)
