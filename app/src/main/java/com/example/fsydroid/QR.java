@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -27,11 +28,11 @@ public class QR extends AppCompatActivity {
         SQLiteHelper connection = new SQLiteHelper(this, "FSY", null, 1);
 
         Long eventValue;
-
         Intent getEventValue = getIntent();
         eventValue = getEventValue.getLongExtra("eventValue",0);
+        Integer value = eventValue.intValue();
 
-        Toast.makeText(QR.this, "Valor recuperado: " + eventValue, Toast.LENGTH_LONG).show();
+        Toast.makeText(QR.this, "Valor recuperado: " + value, Toast.LENGTH_LONG).show();
 
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
@@ -42,7 +43,8 @@ public class QR extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(QR.this, result.getText(), Toast.LENGTH_LONG).show();
-                        InsertOne(result.getText());
+                        String resultText = result.getText().toString();
+                        InsertOne(resultText, value);
                     }
                 });
             }
@@ -55,15 +57,42 @@ public class QR extends AppCompatActivity {
         });
     }
 
-    private void InsertOne(String reference){
+    private void InsertOne(String reference, Integer value){
         SQLiteHelper connection = new SQLiteHelper(this, "FSY", null, 1);
+        SQLiteDatabase read = connection.getReadableDatabase();
+        String[] fields = {Utilities.ID_FIELD,Utilities.REFERENCE_FIELD};
+        String[] ref = {reference};
+        String[] id = {value.toString()};
 
-        SQLiteDatabase db = connection.getWritableDatabase();
+//        Cursor cursor = read.rawQuery("SELECT * FROM Person WHERE Id = 1", null);
+        Cursor cursor = read.query(Utilities.PERSON_TABLE,fields, Utilities.REFERENCE_FIELD + " LIKE ?",ref,null,null,null,null);
+        cursor.moveToFirst();
+        Toast.makeText(this, "Registro: Id " + cursor.getString(0) + "Ref " + cursor.getString(1), Toast.LENGTH_SHORT).show();
+        cursor.close();
+
+//        System.out.println("valor de referencia: " + ref.toString());
+
+/*        try {
+            //Primero se manda el campo que quieres consultar, y luego el valor que buscara en ese campo
+            Cursor cursor = read.query(Utilities.PERSON_TABLE, null, "Id = 1", null, null,null,null);
+            *//*Cursor cursor = read.rawQuery("SELECT " + Utilities.ID_FIELD + "," + Utilities.REFERENCE_FIELD + " FROM " + Utilities.PERSON_TABLE
+                + " WHERE " + Utilities.REFERENCE_FIELD + "=?", ref);*//*
+            cursor.moveToFirst();
+            cursor.close();
+            Toast.makeText(this, "Registro: Id " + cursor.getString(0) + "Ref " + cursor.getString(1), Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e){
+            Toast.makeText(this, "Registro no encontrado" + ref, Toast.LENGTH_SHORT).show();
+        }*/
+
+        //Save new data on scanned
+        /*SQLiteDatabase db = connection.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Utilities.REFERENCE_FIELD, reference);
         Long result = db.insert(Utilities.PERSON_TABLE, Utilities.ID_FIELD, values);
         Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "Id: " + result, Toast.LENGTH_SHORT).show();
+        db.close();*/
     }
 
     @Override
