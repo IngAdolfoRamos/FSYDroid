@@ -9,5 +9,4 @@ public class Utilities {
     public static final String CREATE_USER_TABLE =
             "CREATE TABLE " + PERSON_TABLE + " (" + ID_FIELD + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + REFERENCE_FIELD + " TEXT)";
-
 }

@@ -3,7 +3,9 @@ package com.example.fsydroid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -40,6 +42,7 @@ public class QR extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(QR.this, result.getText(), Toast.LENGTH_LONG).show();
+                        InsertOne(result.getText());
                     }
                 });
             }
@@ -50,8 +53,17 @@ public class QR extends AppCompatActivity {
                 mCodeScanner.startPreview();
             }
         });
+    }
 
+    private void InsertOne(String reference){
+        SQLiteHelper connection = new SQLiteHelper(this, "FSY", null, 1);
 
+        SQLiteDatabase db = connection.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Utilities.REFERENCE_FIELD, reference);
+        Long result = db.insert(Utilities.PERSON_TABLE, Utilities.ID_FIELD, values);
+        Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Id: " + result, Toast.LENGTH_SHORT).show();
     }
 
     @Override
