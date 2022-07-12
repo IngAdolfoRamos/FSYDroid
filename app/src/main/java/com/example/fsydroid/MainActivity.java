@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
+    private static final int REQUEST_CODE = 123456;
 
     Spinner eventSelectionS;
     Button qrB, manualSelectionB;
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         qrB = findViewById(R.id.qrB);
         manualSelectionB = findViewById(R.id.manualB);
 
-        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
+        checkPermission();
+
 
         ArrayList<String> items = new ArrayList<>();
         items.add("Ingreso");
@@ -80,15 +82,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void checkPermission(String permission, int requestCode)
+    public void checkPermission()
     {
-        if (ContextCompat.checkSelfPermission(MainActivity.this, permission) == PackageManager.PERMISSION_DENIED) {
+        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA};
+
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), permissions[0]) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this.getApplicationContext(), permissions[1]) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this.getApplicationContext(), permissions[2]) == PackageManager.PERMISSION_GRANTED) {
 
             // Requesting the permission
-            ActivityCompat.requestPermissions(MainActivity.this, new String[] { permission }, requestCode);
+//            ActivityCompat.requestPermissions(MainActivity.this, new String[] { permission }, requestCode);
         }
         else {
-            Toast.makeText(MainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(MainActivity.this, permissions,REQUEST_CODE);
         }
     }
 
@@ -108,8 +116,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else if (requestCode == STORAGE_PERMISSION_CODE) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(MainActivity.this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(MainActivity.this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
