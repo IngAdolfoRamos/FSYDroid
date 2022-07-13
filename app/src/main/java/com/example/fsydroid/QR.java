@@ -31,7 +31,6 @@ public class QR extends AppCompatActivity {
         Intent getEventValue = getIntent();
         eventValue = getEventValue.getLongExtra("eventValue",0);
         Integer value = eventValue.intValue();
-
         Toast.makeText(QR.this, "Valor recuperado: " + value, Toast.LENGTH_LONG).show();
 
         CodeScannerView scannerView = findViewById(R.id.scanner_view);

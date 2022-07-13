@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 manualSelectionB.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent goToManualSelectionPage = new Intent(MainActivity.this, QR.class);
+                        Intent goToManualSelectionPage = new Intent(MainActivity.this, ManualSelection.class);
                         goToManualSelectionPage.putExtra("eventValue", item);
                         startActivity(goToManualSelectionPage);
                     }
