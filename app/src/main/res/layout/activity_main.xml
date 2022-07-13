@@ -46,4 +46,10 @@
         android:layout_height="wrap_content"
         android:text="Sincronizar datos"/>
 
+    <Button
+        android:id="@+id/deleteDBB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eliminar Base de datos"/>
+
 </LinearLayout>

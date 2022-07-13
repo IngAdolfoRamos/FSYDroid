@@ -54,6 +54,7 @@ public class QR extends AppCompatActivity {
                 mCodeScanner.startPreview();
             }
         });
+
     }
 
     private void InsertOne(String reference, Integer value){
@@ -64,10 +65,11 @@ public class QR extends AppCompatActivity {
         String[] id = {value.toString()};
 
 //        Cursor cursor = read.rawQuery("SELECT * FROM Person WHERE Id = 1", null);
-        Cursor cursor = read.query(Utilities.PERSON_TABLE,fields, Utilities.REFERENCE_FIELD + " LIKE ?",ref,null,null,null,null);
+        //busco el registro que se acaba de escanear para ver si existe ese codigo o referencia
+/*        Cursor cursor = read.query(Utilities.PERSON_TABLE,fields, Utilities.REFERENCE_FIELD + " LIKE ?",ref,null,null,null,null);
         cursor.moveToFirst();
         Toast.makeText(this, "Registro: Id " + cursor.getString(0) + "Ref " + cursor.getString(1), Toast.LENGTH_SHORT).show();
-        cursor.close();
+        cursor.close();*/
 
 //        System.out.println("valor de referencia: " + ref.toString());
 
@@ -85,13 +87,13 @@ public class QR extends AppCompatActivity {
         }*/
 
         //Save new data on scanned
-        /*SQLiteDatabase db = connection.getWritableDatabase();
+        SQLiteDatabase db = connection.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Utilities.REFERENCE_FIELD, reference);
-        Long result = db.insert(Utilities.PERSON_TABLE, Utilities.ID_FIELD, values);
+        Long result = db.insert(Utilities.PERSON_TABLE, null, values);
         Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "Id: " + result, Toast.LENGTH_SHORT).show();
-        db.close();*/
+        db.close();
     }
 
     @Override

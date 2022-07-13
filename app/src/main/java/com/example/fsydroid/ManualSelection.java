@@ -44,19 +44,6 @@ public class ManualSelection extends AppCompatActivity {
         Integer value = eventValue.intValue();
         Toast.makeText(ManualSelection.this, "Valor recuperado: " + eventValue, Toast.LENGTH_SHORT).show();
 
-
-/*        // you need to have a list of data that you want the spinner to display
-        List<String> spinnerArray =  new ArrayList<String>();
-        spinnerArray.add("item1");
-        spinnerArray.add("item2");
-
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, spinnerArray);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner sItems = (Spinner) findViewById(R.id.groupSelectorS);
-        sItems.setAdapter(adapter);*/
-
         List<String> groupsArray = new ArrayList<String>();
         String[] columns = {Utilities.REFERENCE_FIELD};
         String reference = "7501593830225";
@@ -70,7 +57,7 @@ public class ManualSelection extends AppCompatActivity {
 
         if (cursor.moveToFirst()) {
             do {
-                groupsArray.add(cursor.getString(1).toString());
+                groupsArray.add(cursor.getString(0).toString());
                 Toast.makeText(this, "DB: " + cursor.getString(0), Toast.LENGTH_SHORT).show();
             } while(cursor.moveToNext());
         }

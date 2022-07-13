@@ -6,8 +6,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 123456;
 
     Spinner eventSelectionS;
-    Button qrB, manualSelectionB;
+    Button qrB, manualSelectionB, deleteDBB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         eventSelectionS = findViewById(R.id.actionSpinner);
         qrB = findViewById(R.id.qrB);
         manualSelectionB = findViewById(R.id.manualB);
+        deleteDBB = findViewById(R.id.deleteDBB);
 
         checkPermission();
 
@@ -78,6 +81,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+        deleteDBB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SQLiteHelper connection = new SQLiteHelper(MainActivity.this, "FSY", null, 1);
+                SQLiteDatabase db = connection.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(Utilities.ID_FIELD,8);
+                values.put(Utilities.REFERENCE_FIELD, "REFERENCIA 8");
+                Long result = db.insert(Utilities.PERSON_TABLE, null, values);
+                Toast.makeText(MainActivity.this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Id: " + result, Toast.LENGTH_SHORT).show();
+                db.close();
             }
         });
     }
