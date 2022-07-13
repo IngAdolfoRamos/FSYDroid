@@ -87,13 +87,34 @@ public class MainActivity extends AppCompatActivity {
         deleteDBB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 SQLiteHelper connection = new SQLiteHelper(MainActivity.this, "FSY", null, 1);
                 SQLiteDatabase db = connection.getWritableDatabase();
-                ContentValues values = new ContentValues();
-                values.put(Utilities.ID_FIELD,8);
-                values.put(Utilities.REFERENCE_FIELD, "REFERENCIA 8");
-                Long result = db.insert(Utilities.PERSON_TABLE, null, values);
-                Toast.makeText(MainActivity.this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
+
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(Utilities.ID_FIELD,8);
+                    values.put(Utilities.REFERENCE_FIELD, "REFERENCIA 8");
+                    Long result = db.insert(Utilities.PERSON_TABLE, null, values);
+                    Toast.makeText(MainActivity.this, "Insertado en Person: ", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){
+                    Toast.makeText(MainActivity.this, "Fallo person: " + e.toString(), Toast.LENGTH_LONG).show();
+                }
+
+                try {
+                    ContentValues referenceTable = new ContentValues();
+                    referenceTable.put(Utilities.ID_RECORDS_FIELD, 3);
+                    referenceTable.put(Utilities.EVENT_FIELD, "Comida");
+                    referenceTable.put(Utilities.REFERENCE_RECORDS_FIELD, "Referencia de records table");
+                    referenceTable.put(Utilities.PERSON_ID_FIELD, "Comida");
+                    db.insert(Utilities.RECORDS_TABLE, null, referenceTable);
+                    Toast.makeText(MainActivity.this, "Insertado en Records: ", Toast.LENGTH_SHORT).show();
+                }
+                catch (Exception e){
+                    Toast.makeText(MainActivity.this, "Fallo records: " + e.toString(), Toast.LENGTH_LONG).show();
+                }
+
+//                Toast.makeText(MainActivity.this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
 //                Toast.makeText(MainActivity.this, "Id: " + result, Toast.LENGTH_SHORT).show();
                 db.close();
             }
