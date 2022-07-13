@@ -5,14 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +24,8 @@ public class ManualSelection extends AppCompatActivity implements QuantityListen
     ArrayList<Person> ListPeople;
     RecyclerView peopleListRV;
     Button saveDataB;
+
+    String prueba;
 
     SQLiteHelper connection;
     QuantityAdapter quantityAdapter;
@@ -72,10 +71,34 @@ public class ManualSelection extends AppCompatActivity implements QuantityListen
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         groupSelectorS.setAdapter(adapter);*/
 
+        /* Populating Spinner with hardcoded groups*/
+        groupsArray.add("Grupo 01");
+        groupsArray.add("Grupo 02");
+        groupsArray.add("Grupo 03");
+        groupsArray.add("Grupo 04");
+        groupsArray.add("Grupo 05");
+        groupsArray.add("Grupo 06");
+        groupsArray.add("Grupo 07");
+        groupsArray.add("Grupo 08");
+        groupsArray.add("Grupo 09");
+        for (int i  = 10; i <= 80; i++){
+            groupsArray.add("Grupo " + i);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, groupsArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        groupSelectorS.setAdapter(adapter);
+
+
         groupSelectorS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                final String[] valor = new String[1];
+                String item = adapterView.getSelectedItem().toString();
+                Toast.makeText(ManualSelection.this, item.toString(), Toast.LENGTH_SHORT).show();
+                valor[0] = String.valueOf(item);
+                System.out.println(valor[0]);
+                prueba = valor[0];
             }
 
             @Override
@@ -111,7 +134,8 @@ public class ManualSelection extends AppCompatActivity implements QuantityListen
         saveDataB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ManualSelection.this, "Seleccion de id: " + arrayList.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ManualSelection.this, "Seleccion de id: " + arrayList.toString() + " " + prueba,
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
