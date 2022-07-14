@@ -19,6 +19,18 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     Spinner eventSelectionS;
     Button qrB, manualSelectionB, deleteDBB;
+    RequestQueue myQueue;
 
     SQLiteHelper connection;
 
@@ -38,12 +51,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        myQueue = Volley.newRequestQueue(this);
+
         eventSelectionS = findViewById(R.id.actionSpinner);
         qrB = findViewById(R.id.qrB);
         manualSelectionB = findViewById(R.id.manualB);
         deleteDBB = findViewById(R.id.deleteDBB);
 
         checkPermission();
+
+        getJsonRequest();
 
         connection = new SQLiteHelper(this, "FSY", null, 1);
         try {
@@ -170,6 +187,39 @@ public class MainActivity extends AppCompatActivity {
                 db.close();
             }
         });
+    }
+
+    private void getJsonRequest(){
+        String url = "https://fsy.estacaamecameca.org/api/v1/personas/list";
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    String respuesta = response.toString();
+                    JSONObject start = new JSONObject(respuesta);
+                    JSONObject dataObject = start.getJSONObject("data");
+                    JSONArray personasArray = dataObject.getJSONArray("personas");
+                    for (int o = 0; o <= 5; o++){
+                        JSONObject end = personasArray.getJSONObject(o);
+                        String id = end.getString("id");
+                        String referencia = end.getString("referencia");
+                        System.out.println("El id del registro " + o + " es: " + id);
+                        System.out.println("La referencia del registro " + o + " es: " + referencia);
+                    }
+
+                    System.out.println("Respuesta json: " + respuesta);
+                }catch (JSONException e){
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        myQueue.add(request);
     }
 
     public void checkPermission()
