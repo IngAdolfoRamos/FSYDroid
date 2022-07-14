@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +58,21 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Creando DB por primera vez", Toast.LENGTH_SHORT).show();
 //                db.rawQuery("INSERT INTO Person VALUES ('205', 'Referencia 205')",null);
                 Toast.makeText(this, "2 Longitud del cursor: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
-                try {
+                //Creando el array para insertar varios registros a la vez
+                SQLiteDatabase ins = connection.getWritableDatabase();
+                List<String> registros = new ArrayList<String>();
+                String ids, referencias;
+                ContentValues val = new ContentValues();
+                for (int i = 1; i < 10; i++){
+                    ids = "" + i;
+                    referencias = "Referencia: " + i;
+                    val.put(Utilities.ID_FIELD, ids);
+                    val.put(Utilities.REFERENCE_FIELD, referencias);
+                    ins.insert(Utilities.PERSON_TABLE, null, val);
+                }
+                ins.close();
+                //Intento crear la base de datos por primera vez
+                /*try {
                     SQLiteDatabase insert = connection.getWritableDatabase();
                     Toast.makeText(this, "Creando registros", Toast.LENGTH_SHORT).show();
 //                    insert.execSQL("INSERT INTO Person VALUES ('207', 'Referencia 205')"); //Sin funciona
@@ -70,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     insert.close();
                 }catch (Exception e){
                     Toast.makeText(this, "Error creando registros: " +e.toString(), Toast.LENGTH_LONG).show();
-                }
+                }*/
             }
             db.close();
         }catch(Exception e){
