@@ -9,6 +9,7 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     Spinner eventSelectionS;
     Button qrB, manualSelectionB, deleteDBB;
 
+    SQLiteHelper connection;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,39 @@ public class MainActivity extends AppCompatActivity {
         deleteDBB = findViewById(R.id.deleteDBB);
 
         checkPermission();
+
+        connection = new SQLiteHelper(this, "FSY", null, 1);
+        try {
+
+            SQLiteDatabase db = connection.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM Person",null);
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0){
+                Toast.makeText(this, "BD existente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "1 Longitud del cursor: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Creando DB por primera vez", Toast.LENGTH_SHORT).show();
+//                db.rawQuery("INSERT INTO Person VALUES ('205', 'Referencia 205')",null);
+                Toast.makeText(this, "2 Longitud del cursor: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
+                try {
+                    SQLiteDatabase insert = connection.getWritableDatabase();
+                    Toast.makeText(this, "Creando registros", Toast.LENGTH_SHORT).show();
+//                    insert.execSQL("INSERT INTO Person VALUES ('207', 'Referencia 205')"); //Sin funciona
+                    ContentValues valores = new ContentValues();
+                    String id = "900";
+                    String referencia = "Referencia 900";
+                    valores.put(Utilities.ID_FIELD, id);
+                    valores.put(Utilities.REFERENCE_FIELD, referencia);
+                    insert.insert(Utilities.PERSON_TABLE, null, valores);
+                    insert.close();
+                }catch (Exception e){
+                    Toast.makeText(this, "Error creando registros: " +e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+            db.close();
+        }catch(Exception e){
+            Toast.makeText(this, "Error 999: " +  e.toString(), Toast.LENGTH_LONG).show();
+        }
 
 
         ArrayList<String> items = new ArrayList<>();

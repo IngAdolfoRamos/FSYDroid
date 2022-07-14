@@ -87,13 +87,27 @@ public class QR extends AppCompatActivity {
         }*/
 
         //Save new data on scanned
-        SQLiteDatabase db = connection.getWritableDatabase();
+        /*SQLiteDatabase db = connection.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Utilities.REFERENCE_FIELD, reference);
         Long result = db.insert(Utilities.PERSON_TABLE, null, values);
         Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "Id: " + result, Toast.LENGTH_SHORT).show();
-        db.close();
+        db.close();*/
+        try {
+            SQLiteDatabase db = connection.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(Utilities.EVENT_FIELD, "Prueba comida");
+            values.put(Utilities.REFERENCE_RECORDS_FIELD, reference);
+            values.put(Utilities.PERSON_ID_FIELD, "305");
+            Long result = db.insert(Utilities.RECORDS_TABLE, null, values);
+            Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Id: " + result, Toast.LENGTH_SHORT).show();
+            db.close();
+        }catch(Exception e){
+            Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
