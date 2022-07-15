@@ -78,6 +78,7 @@ public class QR extends AppCompatActivity {
             Toast.makeText(this, "Encontrado...insertando", Toast.LENGTH_SHORT).show();
             String referencia = cursor.getString(1);
             String id = cursor.getString(2);
+            String Sent = "False";
 
             try {
                 SQLiteDatabase db = connection.getWritableDatabase();
@@ -85,6 +86,7 @@ public class QR extends AppCompatActivity {
                 values.put(Utilities.EVENT_FIELD, value);
                 values.put(Utilities.REFERENCE_RECORDS_FIELD, referencia);
                 values.put(Utilities.PERSON_ID_FIELD, id);
+                values.put(Utilities.SENT, Sent);
                 Long result = db.insert(Utilities.RECORDS_TABLE, null, values);
 //                Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "Insertado: " + result, Toast.LENGTH_SHORT).show();
@@ -97,6 +99,7 @@ public class QR extends AppCompatActivity {
 
 //            String referencia = cursor.getString(1);
             String id = "null";
+            String Sent = "False";
             Toast.makeText(this, "NOOOO Encontrado...insertando", Toast.LENGTH_SHORT).show();
             try {
                 SQLiteDatabase db = connection.getWritableDatabase();
@@ -104,6 +107,7 @@ public class QR extends AppCompatActivity {
                 values.put(Utilities.EVENT_FIELD, value);
                 values.put(Utilities.REFERENCE_RECORDS_FIELD, reference);
                 values.put(Utilities.PERSON_ID_FIELD, id);
+                values.put(Utilities.SENT, Sent);
                 Long result = db.insert(Utilities.RECORDS_TABLE, null, values);
 //                Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "Insertado: " + result, Toast.LENGTH_SHORT).show();

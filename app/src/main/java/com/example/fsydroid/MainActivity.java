@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 123456;
 
     Spinner eventSelectionS;
-    Button qrB, manualSelectionB, deleteDBB;
+    Button qrB, manualSelectionB, deleteDBB, synchB;
     RequestQueue myQueue;
+    RequestQueue myQueue2;
 
     SQLiteHelper connection;
 
@@ -55,11 +57,13 @@ public class MainActivity extends AppCompatActivity {
         this.setTitle("FSY");
 
         myQueue = Volley.newRequestQueue(this);
+        myQueue2 = Volley.newRequestQueue(this);
 
         eventSelectionS = findViewById(R.id.actionSpinner);
         qrB = findViewById(R.id.qrB);
         manualSelectionB = findViewById(R.id.manualB);
         deleteDBB = findViewById(R.id.deleteDBB);
+        synchB = findViewById(R.id.synchB);
 
         checkPermission();
 
@@ -154,6 +158,152 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        synchB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SQLiteHelper connection = new SQLiteHelper(MainActivity.this, "FSY", null, 1);
+                SQLiteDatabase read = connection.getReadableDatabase();
+                String falso = "hola";
+                String[] fields = {Utilities.EVENT_FIELD,Utilities.REFERENCE_RECORDS_FIELD,Utilities.PERSON_ID_FIELD,Utilities.SENT};
+                String[] fal = {falso};
+//                Toast.makeText(MainActivity.this, "fal: " + falso, Toast.LENGTH_SHORT).show();
+                Cursor cursore = read.rawQuery("SELECT * FROM Records WHERE Sent = " + "'False' ",null);
+//                cursore.getCount();
+//                Toast.makeText(MainActivity.this, "longitud f: " + cursore.getCount(), Toast.LENGTH_SHORT).show();
+                System.out.println("Longitud del cursor: " + cursore.getCount());
+                /*cursore.moveToFirst();
+                Toast.makeText(MainActivity.this, "longitud f: " + cursore.getString(1), Toast.LENGTH_SHORT).show();*/
+
+
+
+                ArrayList arr = new ArrayList();
+                JSONObject jsonObject = new JSONObject();
+
+                if (cursore.moveToFirst()){
+                    try {
+
+//                        System.out.println(eventl);
+                        for (int i = 1; i  <= cursore.getCount(); i++){
+
+                            String refer = cursore.getString(2);
+                            String pe_id = cursore.getString(3);
+                            String eventl = cursore.getString(1);
+
+                            jsonObject.put("referencia", refer);
+                            jsonObject.put("persona_id", pe_id);
+                            jsonObject.put("evento", eventl);
+                            jsonObject.put("created_at", "2022-07-15 02:50");
+                            jsonObject.put("updated_at", "2022-07-15 02:50");
+
+                            arr.add(jsonObject.toString());
+
+                            cursore.moveToNext();
+                        }
+                    }catch (JSONException e){
+
+                    }
+                }
+
+               /* String j = "{\n" +
+                        " \"registros\": [\n" +
+                        "        {\n" +
+                        "            \"referencia\": \"P-H-TEC-TEC1-15-MONOJA-070105-950\",\n" +
+                        "            \"persona_id\": \"\",\n" +
+                        "            \"evento\": \"Comida\",\n" +
+                        "            \"created_at\": \"2022-06-01 08:32\",\n" +
+                        "            \"updated_at\": \"2022-06-01 08:32\"\n" +
+                        "        }\n" +
+                        "    ]\n" +
+                        "\n" +
+                        "}";*/
+
+                JSONObject obj = new JSONObject();
+                try {
+                    obj.put("registros", arr);
+//                    obj.put("registros", j);
+
+                } catch(JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //imprime el ultimo
+                System.out.println("JsonObject: " + jsonObject);
+                //imprime el total de los json en un array
+                System.out.println("ArrayList: " + arr);
+                System.out.println("este se envia: " + obj);
+
+                String urlPOST = "https://fsy.estacaamecameca.org/api/v1/registros/masivos";
+
+                //Intentando mandar el json a la api por POST
+                JsonObjectRequest jsonPOSTRequest = new JsonObjectRequest(Request.Method.POST, urlPOST, obj, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(MainActivity.this, "Respuesta exitosa", Toast.LENGTH_SHORT).show();
+                        System.out.println("Respuesta: " + response.toString());
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "Respuesta fallida", Toast.LENGTH_SHORT).show();
+                        System.out.println("Error: " + error.toString());
+                    }
+                });
+
+
+                /*ArrayList<String> arr = new ArrayList<String>();
+                JSONObject jsonObject = new JSONObject();
+                try {
+
+                    for(int i = 1; i <= 2; i++){
+                        jsonObject.put("id", i);
+                        jsonObject.put("referencia", "ref " + i);
+                        arr.add(jsonObject.toString());
+                    }
+                }catch (JSONException e){
+
+                }
+                System.out.println("arrillo: " + arr);*/
+
+/*                SQLiteHelper connection = new SQLiteHelper(MainActivity.this, "FSY", null, 1);
+                SQLiteDatabase read = connection.getReadableDatabase();
+                String[] fields = {Utilities.EVENT_FIELD,Utilities.REFERENCE_RECORDS_FIELD,Utilities.PERSON_ID_FIELD,Utilities.SENT};
+                String[] fal = {falso};
+
+                Cursor cursore = read.rawQuery("SELECT * FROM Records WHERE Sent = 'False' ",null);
+
+                Toast.makeText(MainActivity.this, "devuelve: " + cursore.getCount(), Toast.LENGTH_SHORT).show();
+
+                if (cursore.moveToFirst()){
+
+                    String evento = cursore.getString(1).toString();
+                    String re = cursore.getString(2).toString();
+                    String idf = cursore.getString(3).toString();
+
+                    try {
+                        for (int i = 0; i <= cursore.getCount(); i++) {
+
+                            nuevo.put("referencia", re);
+                            nuevo.put("persona_id", idf);
+                            nuevo.put("evento", evento);
+                            nuevo.put("created_at", "null");
+                            nuevo.put("updated_at", "null");
+                            arr.add(nuevo.toString());
+                        }
+                    }catch (JSONException e){
+
+                    }
+
+                }else{
+
+                }
+                cursore.close();
+                System.out.println("Array que se envia: " + arr);*/
+                myQueue2.add(jsonPOSTRequest);
+            }
+        });
+
         deleteDBB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void getJsonRequest(){
         String url = "https://fsy.estacaamecameca.org/api/v1/personas/list";
