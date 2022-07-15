@@ -25,6 +25,8 @@ public class QR extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
 
+        this.setTitle("Escaneo QR");
+
         SQLiteHelper connection = new SQLiteHelper(this, "FSY", null, 1);
 
         String eventValue;
@@ -59,16 +61,59 @@ public class QR extends AppCompatActivity {
     private void InsertOne(String reference, String value){
         SQLiteHelper connection = new SQLiteHelper(this, "FSY", null, 1);
         SQLiteDatabase read = connection.getReadableDatabase();
-        String[] fields = {Utilities.id,Utilities.referencia};
+        String[] fields = {Utilities.id,Utilities.referencia,Utilities.id,Utilities.nombre_s};
         String[] ref = {reference};
-        String[] id = {value.toString()};
+//        String[] id = {value.toString()};
 
 //        Cursor cursor = read.rawQuery("SELECT * FROM Person WHERE Id = 1", null);
         //busco el registro que se acaba de escanear para ver si existe ese codigo o referencia
-/*        Cursor cursor = read.query(Utilities.PERSON_TABLE,fields, Utilities.REFERENCE_FIELD + " LIKE ?",ref,null,null,null,null);
-        cursor.moveToFirst();
-        Toast.makeText(this, "Registro: Id " + cursor.getString(0) + "Ref " + cursor.getString(1), Toast.LENGTH_SHORT).show();
-        cursor.close();*/
+        Cursor cursor = read.query(Utilities.PERSON_TABLE, fields, Utilities.referencia + " LIKE ?", ref,null,null,null,null);
+//        cursor.moveToFirst();
+
+//        String referencia = cursor.getString(1);
+        Toast.makeText(this, "devuelve: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
+
+        //Si encuentra el registro
+        if (cursor.moveToFirst()){
+            Toast.makeText(this, "Encontrado...insertando", Toast.LENGTH_SHORT).show();
+            String referencia = cursor.getString(1);
+            String id = cursor.getString(2);
+
+            try {
+                SQLiteDatabase db = connection.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(Utilities.EVENT_FIELD, value);
+                values.put(Utilities.REFERENCE_RECORDS_FIELD, referencia);
+                values.put(Utilities.PERSON_ID_FIELD, id);
+                Long result = db.insert(Utilities.RECORDS_TABLE, null, values);
+//                Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Insertado: " + result, Toast.LENGTH_SHORT).show();
+                db.close();
+            }catch(Exception e){
+                Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        else{
+
+//            String referencia = cursor.getString(1);
+            String id = "null";
+            Toast.makeText(this, "NOOOO Encontrado...insertando", Toast.LENGTH_SHORT).show();
+            try {
+                SQLiteDatabase db = connection.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(Utilities.EVENT_FIELD, value);
+                values.put(Utilities.REFERENCE_RECORDS_FIELD, reference);
+                values.put(Utilities.PERSON_ID_FIELD, id);
+                Long result = db.insert(Utilities.RECORDS_TABLE, null, values);
+//                Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Insertado: " + result, Toast.LENGTH_SHORT).show();
+                db.close();
+            }catch(Exception e){
+                Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
+//        Toast.makeText(this, "Registro: Id " + cursor.getString(0) + "Ref " + cursor.getString(1), Toast.LENGTH_SHORT).show();
+        cursor.close();
 
 //        System.out.println("valor de referencia: " + ref.toString());
 
@@ -93,19 +138,6 @@ public class QR extends AppCompatActivity {
         Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
         Toast.makeText(this, "Id: " + result, Toast.LENGTH_SHORT).show();
         db.close();*/
-        try {
-            SQLiteDatabase db = connection.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(Utilities.EVENT_FIELD, "Prueba comida");
-            values.put(Utilities.REFERENCE_RECORDS_FIELD, reference);
-            values.put(Utilities.PERSON_ID_FIELD, "305");
-            Long result = db.insert(Utilities.RECORDS_TABLE, null, values);
-            Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Id: " + result, Toast.LENGTH_SHORT).show();
-            db.close();
-        }catch(Exception e){
-            Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
-        }
 
     }
 

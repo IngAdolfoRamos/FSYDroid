@@ -9,6 +9,7 @@
     android:orientation="vertical"
     android:padding="40dp">
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,12 +25,13 @@
         android:id="@+id/qrB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="QR"/>
+        android:text="Escaneo QR"/>
 
     <Button
         android:id="@+id/manualB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:text="Manual"/>
 
     <Button
@@ -42,6 +44,7 @@
         android:id="@+id/deleteDBB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Eliminar Base de datos"/>
+        android:text="Eliminar Base de datos"
+        android:visibility="invisible"/>
 
 </LinearLayout>
