@@ -208,17 +208,61 @@ public class MainActivity extends AppCompatActivity {
                     ContentValues valuesFT = new ContentValues();
                     for (int o = 0; o <= personasArray.length(); o++){
                         JSONObject end = personasArray.getJSONObject(o);
+
+                        //Obteniendo cada valor del array del request
                         String id = end.getString("id");
                         String referencia = end.getString("referencia");
+                        String a_paterno = end.getString("a_paterno");
+                        String a_materno = end.getString("a_materno");
+                        String nombre_s = end.getString("nombre_s");
+                        String tipo = end.getString("tipo");
+                        String sexo = end.getString("sexo");
+                        String f_nacimiento = end.getString("f_nacimiento");
+                        String gruponombre = end.getString("gruponombre");
+                        String consejero_grupo = end.getString("consejero_grupo");
+                        String companianombre = end.getString("companianombre");
+                        String consejero_compania = end.getString("consejero_compania");
+                        String cabananombre = end.getString("cabananombre");
+                        String cabanatipo = end.getString("cabanatipo");
+                        String seguro = end.getString("seguro");
+                        String informacion_medica = end.getString("informacion_medica");
+                        String dificultad_fisica = end.getString("dificultad_fisica");
+                        String tratamiento_fisico = end.getString("tratamiento_fisico");
+                        String informacion_alimenticia = end.getString("informacion_alimenticia");
+                        String problemas_digestivos = end.getString("problemas_digestivos");
+                        String colitis_gastritis = end.getString("colitis_gastritis");
+                        String diabetico_asmatico = end.getString("diabetico_asmatico");
+
                         System.out.println("El id del registro " + o + " es: " + id);
                         System.out.println("La referencia del registro " + o + " es: " + referencia);
 
                         nuevo.put("id", id);
                         nuevo.put("refo", referencia);
 
+
                         //Insertando registros en la base de datos
                         valuesFT.put(Utilities.id,id);
                         valuesFT.put(Utilities.referencia, referencia);
+                        valuesFT.put(Utilities.a_paterno,a_paterno);
+                        valuesFT.put(Utilities.a_materno,a_materno);
+                        valuesFT.put(Utilities.nombre_s,nombre_s);
+                        valuesFT.put(Utilities.tipo,tipo);
+                        valuesFT.put(Utilities.sexo,sexo);
+                        valuesFT.put(Utilities.f_nacimiento,f_nacimiento);
+                        valuesFT.put(Utilities.gruponombre,gruponombre);
+                        valuesFT.put(Utilities.consejero_grupo,consejero_grupo);
+                        valuesFT.put(Utilities.companianombre,companianombre);
+                        valuesFT.put(Utilities.consejero_compania,consejero_compania);
+                        valuesFT.put(Utilities.cabananombre,cabananombre);
+                        valuesFT.put(Utilities.cabanatipo,cabanatipo);
+                        valuesFT.put(Utilities.seguro,seguro);
+                        valuesFT.put(Utilities.informacion_medica,informacion_medica);
+                        valuesFT.put(Utilities.dificultad_fisica,dificultad_fisica);
+                        valuesFT.put(Utilities.tratamiento_fisico,tratamiento_fisico);
+                        valuesFT.put(Utilities.informacion_alimenticia,informacion_alimenticia);
+                        valuesFT.put(Utilities.problemas_digestivos,problemas_digestivos);
+                        valuesFT.put(Utilities.colitis_gastritis,colitis_gastritis);
+                        valuesFT.put(Utilities.diabetico_asmatico,diabetico_asmatico);
                         Long result = insertFT.insert(Utilities.PERSON_TABLE, null, valuesFT);
 
                         arr.add(nuevo.toString());

@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,18 +54,18 @@ public class ManualSelection extends AppCompatActivity implements QuantityListen
         String[] ref = {reference};
 
         /* Obtener las referencias o grupos para llenar el Picker pero se va a harcodear */
-/*        SQLiteDatabase readGroups = connection.getReadableDatabase();
-        Cursor cursor = readGroups.rawQuery("SELECT Id,Reference FROM Person",null);
-        cursor.moveToFirst();
-        groupsArray.add("agregado manual");
+ /*       SQLiteDatabase readGroups = connection.getReadableDatabase();
+        Cursor cursorG = readGroups.rawQuery("SELECT gruponombre FROM Person",null);
+        cursorG.moveToFirst();
+//        groupsArray.add("agregado manual");
 
-        if (cursor.moveToFirst()) {
+        if (cursorG.moveToFirst()) {
             do {
-                groupsArray.add(cursor.getString(0).toString());
-                Toast.makeText(this, "DB: " + cursor.getString(0), Toast.LENGTH_SHORT).show();
-            } while(cursor.moveToNext());
+                groupsArray.add(cursorG.getString(0).toString());
+                Toast.makeText(this, "DB: " + cursorG.getString(0), Toast.LENGTH_SHORT).show();
+            } while(cursorG.moveToNext());
         }
-        cursor.close();
+        cursorG.close();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, groupsArray);

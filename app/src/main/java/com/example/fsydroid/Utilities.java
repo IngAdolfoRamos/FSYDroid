@@ -35,7 +35,17 @@ public class Utilities {
 
     public static final String CREATE_USER_TABLE =
             "CREATE TABLE " + PERSON_TABLE + " (" + id + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + referencia + " TEXT)";
+                    + referencia + " TEXT, " + a_paterno + " TEXT, "
+                    + a_materno + " TEXT, " + nombre_s + " TEXT, "
+                    + tipo + " TEXT, " + sexo + " TEXT, "
+                    + f_nacimiento + " TEXT, " + gruponombre + " TEXT, "
+                    + consejero_grupo + " TEXT, " + companianombre + " TEXT, "
+                    + consejero_compania + " TEXT, " + cabananombre + " TEXT, "
+                    + cabanatipo + " TEXT, " + seguro + " TEXT, "
+                    + informacion_medica + " TEXT, " + dificultad_fisica + " TEXT, "
+                    + tratamiento_fisico + " TEXT, " + informacion_alimenticia + " TEXT, "
+                    + problemas_digestivos + " TEXT, " + colitis_gastritis + " TEXT, "
+                    + diabetico_asmatico + " TEXT" + ")";
 
     public static final String CREATE_RECORDS_TABLE =
             "CREATE TABLE " + RECORDS_TABLE + " (" + ID_RECORDS_FIELD + " INTEGER PRIMARY KEY AUTOINCREMENT, "
