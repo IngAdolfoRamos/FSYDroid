@@ -67,13 +67,23 @@ public class MainActivity extends AppCompatActivity {
 
         checkPermission();
 
-        connection = new SQLiteHelper(this, "FSY", null, 1);
-        try {
+        SQLiteHelper cn = new SQLiteHelper(MainActivity.this, "FSY", null, 1);
+        SQLiteDatabase dbs = cn.getWritableDatabase();
+        ContentValues refd = new ContentValues();
+        refd.put(Utilities.ID_RECORDS_FIELD, 1);
+        refd.put(Utilities.EVENT_FIELD, "Prueba");
+        refd.put(Utilities.REFERENCE_RECORDS_FIELD, "Prueba");
+        refd.put(Utilities.PERSON_ID_FIELD, "Prueba");
+        refd.put(Utilities.SENT, "False");
+        dbs.insert(Utilities.RECORDS_TABLE, null, refd);
+        Toast.makeText(MainActivity.this, "Prueba insertada en Records: ", Toast.LENGTH_SHORT).show();
 
+        try {
+            connection = new SQLiteHelper(MainActivity.this, "FSY", null, 1);
             SQLiteDatabase db = connection.getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM Person",null);
-            cursor.moveToFirst();
-            if (cursor.getCount() > 0){
+
+            if (cursor.getCount() >= 1){
                 Toast.makeText(this, "BD existente", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "1 Longitud del cursor: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
             }else{
@@ -110,9 +120,10 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "Error creando registros: " +e.toString(), Toast.LENGTH_LONG).show();
                 }*/
             }
-            db.close();
+            cursor.close();
         }catch(Exception e){
             Toast.makeText(this, "Error 999: " +  e.toString(), Toast.LENGTH_LONG).show();
+            System.out.println("Error 999: " + e.toString());
         }
 
 
@@ -236,18 +247,47 @@ public class MainActivity extends AppCompatActivity {
 
                 String urlPOST = "https://fsy.estacaamecameca.org/api/v1/registros/masivos";
 
+
+
                 //Intentando mandar el json a la api por POST
                 JsonObjectRequest jsonPOSTRequest = new JsonObjectRequest(Request.Method.POST, urlPOST, obj, new Response.Listener<JSONObject>() {
+
+
+
                     @Override
                     public void onResponse(JSONObject response) {
                         Toast.makeText(MainActivity.this, "Respuesta exitosa", Toast.LENGTH_SHORT).show();
                         System.out.println("Respuesta: " + response.toString());
-                    }
+
+                        SQLiteDatabase update = connection.getWritableDatabase();
+                        Toast.makeText(MainActivity.this, "Actualizando registros", Toast.LENGTH_SHORT).show();
+                        System.out.println("Actualizando registros en Records");
+
+                        ContentValues updateV = new ContentValues();
+                        String clw = "Falso";
+                        String enviado = "True";
+                        updateV.put(Utilities.SENT, enviado);
+//                        System.out.println("valor de clw: " + new String[]{clw}.toString());
+                        try{
+                            update.update(Utilities.RECORDS_TABLE,updateV, " Sent = False",null);
+                            update.close();
+                        }catch(Exception e){
+                            System.out.println("errro de actualizacion: " + e.toString());
+                        }
+
+                        for (int o = 0; o <= 2; o++){
+
+                            System.out.println("hola: " + o);
+
+                        }
+
+                        }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(MainActivity.this, "Respuesta fallida", Toast.LENGTH_SHORT).show();
                         System.out.println("Error: " + error.toString());
+
                     }
                 });
 
