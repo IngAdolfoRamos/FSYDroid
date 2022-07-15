@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
         checkPermission();
 
-        getJsonRequest();
-
         connection = new SQLiteHelper(this, "FSY", null, 1);
         try {
 
@@ -73,22 +71,23 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "BD existente", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "1 Longitud del cursor: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(this, "Creando DB por primera vez", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Creando DB por primera vez", Toast.LENGTH_LONG).show();
 //                db.rawQuery("INSERT INTO Person VALUES ('205', 'Referencia 205')",null);
                 Toast.makeText(this, "2 Longitud del cursor: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
+                getJsonRequest();
                 //Creando el array para insertar varios registros a la vez
-                SQLiteDatabase ins = connection.getWritableDatabase();
+                /*SQLiteDatabase ins = connection.getWritableDatabase();
                 List<String> registros = new ArrayList<String>();
                 String ids, referencias;
                 ContentValues val = new ContentValues();
                 for (int i = 1; i < 10; i++){
                     ids = "" + i;
                     referencias = "Referencia: " + i;
-                    val.put(Utilities.ID_FIELD, ids);
-                    val.put(Utilities.REFERENCE_FIELD, referencias);
+                    val.put(Utilities.id, ids);
+                    val.put(Utilities.referencia, referencias);
                     ins.insert(Utilities.PERSON_TABLE, null, val);
                 }
-                ins.close();
+                ins.close();*/
                 //Intento crear la base de datos por primera vez
                 /*try {
                     SQLiteDatabase insert = connection.getWritableDatabase();
@@ -162,8 +161,8 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     ContentValues values = new ContentValues();
-                    values.put(Utilities.ID_FIELD,8);
-                    values.put(Utilities.REFERENCE_FIELD, "REFERENCIA 8");
+                    values.put(Utilities.id,8);
+                    values.put(Utilities.referencia, "REFERENCIA 8");
                     Long result = db.insert(Utilities.PERSON_TABLE, null, values);
                     Toast.makeText(MainActivity.this, "Insertado en Person: ", Toast.LENGTH_SHORT).show();
                 }catch (Exception e){
@@ -204,7 +203,10 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject nuevo = new JSONObject();
                     JSONArray nuevoArray = new JSONArray();
                     ArrayList<String> arr = new ArrayList<String>();
-                    for (int o = 0; o <= 5; o++){
+                    SQLiteHelper connections = new SQLiteHelper(MainActivity.this, "FSY", null, 1);
+                    SQLiteDatabase insertFT = connections.getWritableDatabase();
+                    ContentValues valuesFT = new ContentValues();
+                    for (int o = 0; o <= personasArray.length(); o++){
                         JSONObject end = personasArray.getJSONObject(o);
                         String id = end.getString("id");
                         String referencia = end.getString("referencia");
@@ -213,6 +215,11 @@ public class MainActivity extends AppCompatActivity {
 
                         nuevo.put("id", id);
                         nuevo.put("refo", referencia);
+
+                        //Insertando registros en la base de datos
+                        valuesFT.put(Utilities.id,id);
+                        valuesFT.put(Utilities.referencia, referencia);
+                        Long result = insertFT.insert(Utilities.PERSON_TABLE, null, valuesFT);
 
                         arr.add(nuevo.toString());
                         System.out.println("ARRR: " + arr);
@@ -227,6 +234,8 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("JSON CREADO: " + nuevo);
                     System.out.println("Array finalillo: " + nuevoArray);
 //                    System.out.println("Respuesta json: " + respuesta);
+
+                    insertFT.close();
                 }catch (JSONException e){
 
                 }

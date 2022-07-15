@@ -47,7 +47,7 @@ public class ManualSelection extends AppCompatActivity implements QuantityListen
         Toast.makeText(ManualSelection.this, "Valor recuperado: " + eventValue, Toast.LENGTH_SHORT).show();
 
         List<String> groupsArray = new ArrayList<String>();
-        String[] columns = {Utilities.REFERENCE_FIELD};
+        String[] columns = {Utilities.referencia};
         String reference = "7501593830225";
         String[] ref = {reference};
 

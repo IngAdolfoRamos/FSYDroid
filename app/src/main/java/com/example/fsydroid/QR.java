@@ -59,7 +59,7 @@ public class QR extends AppCompatActivity {
     private void InsertOne(String reference, String value){
         SQLiteHelper connection = new SQLiteHelper(this, "FSY", null, 1);
         SQLiteDatabase read = connection.getReadableDatabase();
-        String[] fields = {Utilities.ID_FIELD,Utilities.REFERENCE_FIELD};
+        String[] fields = {Utilities.id,Utilities.referencia};
         String[] ref = {reference};
         String[] id = {value.toString()};
 
