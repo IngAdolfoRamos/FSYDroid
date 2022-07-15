@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,15 +201,32 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject start = new JSONObject(respuesta);
                     JSONObject dataObject = start.getJSONObject("data");
                     JSONArray personasArray = dataObject.getJSONArray("personas");
+                    JSONObject nuevo = new JSONObject();
+                    JSONArray nuevoArray = new JSONArray();
+                    ArrayList<String> arr = new ArrayList<String>();
                     for (int o = 0; o <= 5; o++){
                         JSONObject end = personasArray.getJSONObject(o);
                         String id = end.getString("id");
                         String referencia = end.getString("referencia");
                         System.out.println("El id del registro " + o + " es: " + id);
                         System.out.println("La referencia del registro " + o + " es: " + referencia);
-                    }
 
-                    System.out.println("Respuesta json: " + respuesta);
+                        nuevo.put("id", id);
+                        nuevo.put("refo", referencia);
+
+                        arr.add(nuevo.toString());
+                        System.out.println("ARRR: " + arr);
+
+//                        nuevoArray.put(nuevo);
+
+                        System.out.println("Nuevo Json id " + o + " es: " + nuevo.getString("id"));
+                        System.out.println("Respuesta json: " + nuevo);
+                        System.out.println("Array final: " + nuevoArray);
+                        System.out.println("------------------");
+                    }
+                    System.out.println("JSON CREADO: " + nuevo);
+                    System.out.println("Array finalillo: " + nuevoArray);
+//                    System.out.println("Respuesta json: " + respuesta);
                 }catch (JSONException e){
 
                 }
