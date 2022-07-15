@@ -41,10 +41,9 @@ public class ManualSelection extends AppCompatActivity implements QuantityListen
         peopleListRV  = findViewById(R.id.peopleListRV);
         saveDataB = findViewById(R.id.saveDataB);
 
-        Long eventValue;
+        String eventValue;
         Intent getEventValue = getIntent();
-        eventValue = getEventValue.getLongExtra("eventValue",0);
-        Integer value = eventValue.intValue();
+        eventValue = getEventValue.getStringExtra("eventValue");
         Toast.makeText(ManualSelection.this, "Valor recuperado: " + eventValue, Toast.LENGTH_SHORT).show();
 
         List<String> groupsArray = new ArrayList<String>();

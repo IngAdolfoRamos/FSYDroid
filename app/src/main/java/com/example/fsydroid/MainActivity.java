@@ -124,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
         eventSelectionS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Long item = adapterView.getSelectedItemId() + 1;
-                Toast.makeText(MainActivity.this, item.toString(), Toast.LENGTH_SHORT).show();
+                String item = adapterView.getSelectedItem().toString();
+                Toast.makeText(MainActivity.this, item, Toast.LENGTH_SHORT).show();
 
                 qrB.setOnClickListener(new View.OnClickListener() {
                     @Override

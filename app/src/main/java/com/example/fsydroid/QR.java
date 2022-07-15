@@ -27,11 +27,10 @@ public class QR extends AppCompatActivity {
 
         SQLiteHelper connection = new SQLiteHelper(this, "FSY", null, 1);
 
-        Long eventValue;
+        String eventValue;
         Intent getEventValue = getIntent();
-        eventValue = getEventValue.getLongExtra("eventValue",0);
-        Integer value = eventValue.intValue();
-        Toast.makeText(QR.this, "Valor recuperado: " + value, Toast.LENGTH_LONG).show();
+        eventValue = getEventValue.getStringExtra("eventValue");
+        Toast.makeText(QR.this, "Valor recuperado: " + eventValue, Toast.LENGTH_LONG).show();
 
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
@@ -43,7 +42,7 @@ public class QR extends AppCompatActivity {
                     public void run() {
                         Toast.makeText(QR.this, result.getText(), Toast.LENGTH_LONG).show();
                         String resultText = result.getText().toString();
-                        InsertOne(resultText, value);
+                        InsertOne(resultText, eventValue);
                     }
                 });
             }
@@ -57,7 +56,7 @@ public class QR extends AppCompatActivity {
 
     }
 
-    private void InsertOne(String reference, Integer value){
+    private void InsertOne(String reference, String value){
         SQLiteHelper connection = new SQLiteHelper(this, "FSY", null, 1);
         SQLiteDatabase read = connection.getReadableDatabase();
         String[] fields = {Utilities.ID_FIELD,Utilities.REFERENCE_FIELD};
