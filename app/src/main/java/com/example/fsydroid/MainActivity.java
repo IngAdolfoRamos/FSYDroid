@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.setTitle("FSY");
+
         myQueue = Volley.newRequestQueue(this);
 
         eventSelectionS = findViewById(R.id.actionSpinner);
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         items.add("Comida");
         items.add("Cena");
         items.add("Salida");
-        items.add("Conteo nocturno");
+        items.add("Conteo Nocturno");
 
         eventSelectionS.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, items));
         
