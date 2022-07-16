@@ -16,6 +16,9 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class QR extends AppCompatActivity {
 
     private CodeScanner mCodeScanner;
@@ -26,6 +29,14 @@ public class QR extends AppCompatActivity {
         setContentView(R.layout.activity_qr);
 
         this.setTitle("Escaneo QR");
+        /*String dateTime;
+        Calendar calendar;
+        calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat;
+        simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss aaa z");
+        dateTime = simpleDateFormat.format(calendar.getTime()).toString();*/
+
+//        System.out.println(dateTime);
 
         SQLiteHelper connection = new SQLiteHelper(this, "FSY", null, 1);
 
@@ -81,12 +92,22 @@ public class QR extends AppCompatActivity {
             String Sent = "False";
 
             try {
+                String dateTime;
+                Calendar calendar;
+                calendar = Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat;
+                simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                dateTime = simpleDateFormat.format(calendar.getTime()).toString();
+                String Fecha = String.valueOf(dateTime);
+
                 SQLiteDatabase db = connection.getWritableDatabase();
                 ContentValues values = new ContentValues();
                 values.put(Utilities.EVENT_FIELD, value);
                 values.put(Utilities.REFERENCE_RECORDS_FIELD, referencia);
                 values.put(Utilities.PERSON_ID_FIELD, id);
                 values.put(Utilities.SENT, Sent);
+                values.put(Utilities.CREATED_AT, Fecha);
+                values.put(Utilities.UPDATED_AT, Fecha);
                 Long result = db.insert(Utilities.RECORDS_TABLE, null, values);
 //                Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "Insertado: " + result, Toast.LENGTH_SHORT).show();
@@ -102,12 +123,23 @@ public class QR extends AppCompatActivity {
             String Sent = "False";
             Toast.makeText(this, "NOOOO Encontrado...insertando", Toast.LENGTH_SHORT).show();
             try {
+
+                String dateTime;
+                Calendar calendar;
+                calendar = Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat;
+                simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                dateTime = simpleDateFormat.format(calendar.getTime()).toString();
+                String Fecha = String.valueOf(dateTime);
+
                 SQLiteDatabase db = connection.getWritableDatabase();
                 ContentValues values = new ContentValues();
                 values.put(Utilities.EVENT_FIELD, value);
                 values.put(Utilities.REFERENCE_RECORDS_FIELD, reference);
                 values.put(Utilities.PERSON_ID_FIELD, id);
                 values.put(Utilities.SENT, Sent);
+                values.put(Utilities.CREATED_AT, Fecha);
+                values.put(Utilities.UPDATED_AT, Fecha);
                 Long result = db.insert(Utilities.RECORDS_TABLE, null, values);
 //                Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "Insertado: " + result, Toast.LENGTH_SHORT).show();

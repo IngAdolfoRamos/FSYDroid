@@ -33,7 +33,9 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -67,6 +69,15 @@ public class MainActivity extends AppCompatActivity {
 
         checkPermission();
 
+        String dateTime;
+        Calendar calendar;
+        calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat;
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        dateTime = simpleDateFormat.format(calendar.getTime()).toString();
+        String FEcha = String.valueOf(dateTime);
+        System.out.println(dateTime);
+
         SQLiteHelper cn = new SQLiteHelper(MainActivity.this, "FSY", null, 1);
         SQLiteDatabase dbs = cn.getWritableDatabase();
         ContentValues refd = new ContentValues();
@@ -75,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         refd.put(Utilities.REFERENCE_RECORDS_FIELD, "Prueba");
         refd.put(Utilities.PERSON_ID_FIELD, "Prueba");
         refd.put(Utilities.SENT, "False");
+        refd.put(Utilities.CREATED_AT, FEcha);
+        refd.put(Utilities.UPDATED_AT, FEcha);
         dbs.insert(Utilities.RECORDS_TABLE, null, refd);
         Toast.makeText(MainActivity.this, "Prueba insertada en Records: ", Toast.LENGTH_SHORT).show();
 
@@ -194,7 +207,15 @@ public class MainActivity extends AppCompatActivity {
 
                 if (cursore.moveToFirst()){
                     try {
-
+                        String dateTime;
+                        Calendar calendar;
+                        calendar = Calendar.getInstance();
+                        SimpleDateFormat simpleDateFormat;
+                        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        dateTime = simpleDateFormat.format(calendar.getTime()).toString();
+                        String Fecha = String.valueOf(dateTime);
+                        System.out.println("La fecha en string es: " + Fecha);
+//                        System.out.println("El tipo de FEcha es: " + get);
 //                        System.out.println(eventl);
                         for (int i = 1; i  <= cursore.getCount(); i++){
 
@@ -205,8 +226,8 @@ public class MainActivity extends AppCompatActivity {
                             jsonObject.put("referencia", refer);
                             jsonObject.put("persona_id", pe_id);
                             jsonObject.put("evento", eventl);
-                            jsonObject.put("created_at", "2022-07-15 02:50");
-                            jsonObject.put("updated_at", "2022-07-15 02:50");
+                            jsonObject.put("created_at", Fecha);
+                            jsonObject.put("updated_at", Fecha);
 
                             arr.add(jsonObject.toString());
 
@@ -246,7 +267,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("este se envia: " + obj);
 
                 String urlPOST = "https://fsy.estacaamecameca.org/api/v1/registros/masivos";
-
 
 
                 //Intentando mandar el json a la api por POST

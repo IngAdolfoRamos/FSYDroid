@@ -33,6 +33,8 @@ public class Utilities {
     public static final String REFERENCE_RECORDS_FIELD = "Reference";
     public static final String PERSON_ID_FIELD = "Person_Id";
     public static final String SENT = "Sent";
+    public static final String CREATED_AT = "created_at";
+    public static final String UPDATED_AT = "updated_at";
 
     public static final String CREATE_USER_TABLE =
             "CREATE TABLE " + PERSON_TABLE + " (" + id + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -50,5 +52,6 @@ public class Utilities {
 
     public static final String CREATE_RECORDS_TABLE =
             "CREATE TABLE " + RECORDS_TABLE + " (" + ID_RECORDS_FIELD + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + EVENT_FIELD + " TEXT, " + REFERENCE_RECORDS_FIELD + " TEXT, " + PERSON_ID_FIELD + " TEXT, " + SENT + " TEXT)";
+                + EVENT_FIELD + " TEXT, " + REFERENCE_RECORDS_FIELD + " TEXT, " + PERSON_ID_FIELD + " TEXT, "
+                    + SENT + " TEXT, " + CREATED_AT + " TEXT, " + UPDATED_AT + " TEXT" + ")";
 }
