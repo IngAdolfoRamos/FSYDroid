@@ -43,7 +43,7 @@ public class QR extends AppCompatActivity {
         String eventValue;
         Intent getEventValue = getIntent();
         eventValue = getEventValue.getStringExtra("eventValue");
-        Toast.makeText(QR.this, "Valor recuperado: " + eventValue, Toast.LENGTH_LONG).show();
+//        Toast.makeText(QR.this, "Valor recuperado: " + eventValue, Toast.LENGTH_LONG).show();
 
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
@@ -53,7 +53,7 @@ public class QR extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(QR.this, result.getText(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(QR.this, result.getText(), Toast.LENGTH_LONG).show();
                         String resultText = result.getText().toString();
                         InsertOne(resultText, eventValue);
                     }
@@ -82,11 +82,11 @@ public class QR extends AppCompatActivity {
 //        cursor.moveToFirst();
 
 //        String referencia = cursor.getString(1);
-        Toast.makeText(this, "devuelve: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "devuelve: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
 
         //Si encuentra el registro
         if (cursor.moveToFirst()){
-            Toast.makeText(this, "Encontrado...insertando", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Encontrado...insertando", Toast.LENGTH_SHORT).show();
             String referencia = cursor.getString(1);
             String id = cursor.getString(2);
             String Sent = "False";
@@ -110,10 +110,10 @@ public class QR extends AppCompatActivity {
                 values.put(Utilities.UPDATED_AT, Fecha);
                 Long result = db.insert(Utilities.RECORDS_TABLE, null, values);
 //                Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Insertado: " + result, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Insertado: " + result, Toast.LENGTH_SHORT).show();
                 db.close();
             }catch(Exception e){
-                Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Intentalo de nuevo ", Toast.LENGTH_SHORT).show();
             }
         }
         else{
@@ -121,7 +121,7 @@ public class QR extends AppCompatActivity {
 //            String referencia = cursor.getString(1);
             String id = "null";
             String Sent = "False";
-            Toast.makeText(this, "NOOOO Encontrado...insertando", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "NOOOO Encontrado...insertando", Toast.LENGTH_SHORT).show();
             try {
 
                 String dateTime;
@@ -142,10 +142,10 @@ public class QR extends AppCompatActivity {
                 values.put(Utilities.UPDATED_AT, Fecha);
                 Long result = db.insert(Utilities.RECORDS_TABLE, null, values);
 //                Toast.makeText(this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "Insertado: " + result, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Insertado: " + result, Toast.LENGTH_SHORT).show();
                 db.close();
             }catch(Exception e){
-                Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Intentalo de nuevo", Toast.LENGTH_SHORT).show();
             }
         }
 //        Toast.makeText(this, "Registro: Id " + cursor.getString(0) + "Ref " + cursor.getString(1), Toast.LENGTH_SHORT).show();

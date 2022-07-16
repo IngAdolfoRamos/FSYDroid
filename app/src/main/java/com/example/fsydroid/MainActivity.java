@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         refd.put(Utilities.CREATED_AT, FEcha);
         refd.put(Utilities.UPDATED_AT, FEcha);
         dbs.insert(Utilities.RECORDS_TABLE, null, refd);
-        Toast.makeText(MainActivity.this, "Prueba insertada en Records: ", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(MainActivity.this, "Prueba insertada en Records: ", Toast.LENGTH_SHORT).show();
 
         try {
             connection = new SQLiteHelper(MainActivity.this, "FSY", null, 1);
@@ -97,12 +97,12 @@ public class MainActivity extends AppCompatActivity {
             Cursor cursor = db.rawQuery("SELECT * FROM Person",null);
 
             if (cursor.getCount() >= 1){
-                Toast.makeText(this, "BD existente", Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "1 Longitud del cursor: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Base de datos lista", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "1 Longitud del cursor: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(this, "Creando DB por primera vez", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Base de datos creada", Toast.LENGTH_LONG).show();
 //                db.rawQuery("INSERT INTO Person VALUES ('205', 'Referencia 205')",null);
-                Toast.makeText(this, "2 Longitud del cursor: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "2 Longitud del cursor: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
                 getJsonRequest();
                 //Creando el array para insertar varios registros a la vez
                 /*SQLiteDatabase ins = connection.getWritableDatabase();
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getSelectedItem().toString();
-                Toast.makeText(MainActivity.this, item, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, item, Toast.LENGTH_SHORT).show();
 
                 qrB.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -222,12 +222,14 @@ public class MainActivity extends AppCompatActivity {
                             String refer = cursore.getString(2);
                             String pe_id = cursore.getString(3);
                             String eventl = cursore.getString(1);
+                            String created = cursore.getString(5);
+                            String updated = cursore.getString(6);
 
                             jsonObject.put("referencia", refer);
                             jsonObject.put("persona_id", pe_id);
                             jsonObject.put("evento", eventl);
-                            jsonObject.put("created_at", Fecha);
-                            jsonObject.put("updated_at", Fecha);
+                            jsonObject.put("created_at", created);
+                            jsonObject.put("updated_at", updated);
 
                             arr.add(jsonObject.toString());
 
@@ -276,11 +278,11 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(MainActivity.this, "Respuesta exitosa", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Sincronizacion exitosa", Toast.LENGTH_SHORT).show();
                         System.out.println("Respuesta: " + response.toString());
 
                         SQLiteDatabase update = connection.getWritableDatabase();
-                        Toast.makeText(MainActivity.this, "Actualizando registros", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this, "Actualizando registros", Toast.LENGTH_SHORT).show();
                         System.out.println("Actualizando registros en Records");
 
                         ContentValues updateV = new ContentValues();
@@ -305,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, "Respuesta fallida", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Fallo la sincronizacion, intentalo de nuevo.", Toast.LENGTH_LONG).show();
                         System.out.println("Error: " + error.toString());
 
                     }
@@ -376,9 +378,9 @@ public class MainActivity extends AppCompatActivity {
                     values.put(Utilities.id,8);
                     values.put(Utilities.referencia, "REFERENCIA 8");
                     Long result = db.insert(Utilities.PERSON_TABLE, null, values);
-                    Toast.makeText(MainActivity.this, "Insertado en Person: ", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Insertado en Person: ", Toast.LENGTH_SHORT).show();
                 }catch (Exception e){
-                    Toast.makeText(MainActivity.this, "Fallo person: " + e.toString(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(MainActivity.this, "Fallo person: " + e.toString(), Toast.LENGTH_LONG).show();
                 }
 
                 try {
@@ -388,10 +390,10 @@ public class MainActivity extends AppCompatActivity {
                     referenceTable.put(Utilities.REFERENCE_RECORDS_FIELD, "Referencia de records table");
                     referenceTable.put(Utilities.PERSON_ID_FIELD, "Comida");
                     db.insert(Utilities.RECORDS_TABLE, null, referenceTable);
-                    Toast.makeText(MainActivity.this, "Insertado en Records: ", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "Insertado en Records: ", Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception e){
-                    Toast.makeText(MainActivity.this, "Fallo records: " + e.toString(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(MainActivity.this, "Fallo records: " + e.toString(), Toast.LENGTH_LONG).show();
                 }
 
 //                Toast.makeText(MainActivity.this, "Insertado correctamente: ", Toast.LENGTH_SHORT).show();
@@ -534,17 +536,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(MainActivity.this, "Camera Permission Granted", Toast.LENGTH_SHORT) .show();
+//                Toast.makeText(MainActivity.this, "Camera Permission Granted", Toast.LENGTH_SHORT) .show();
             }
             else {
-                Toast.makeText(MainActivity.this, "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
+//                Toast.makeText(MainActivity.this, "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
             }
         }
         else if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(MainActivity.this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(MainActivity.this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
